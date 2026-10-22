@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Cierre del día — Cafetería Cash{% endblock %}
+
+{% block content %}
+  {% set c = cierre or previsualizacion %}
+  {% set establecimiento_completo = c["holder_name_snapshot"] and c["tax_id_snapshot"]
+                                    and c["trade_name_snapshot"] and c["address_snapshot"] %}
+
+  <header class="cabecera">
+    <h1>Cierre del día</h1>
+    <a class="enlace" href="{{ url_for('main.index') }}">← Pantalla de venta</a>
+  </header>
+
+  <nav class="selector-dia">
+    <a href="{{ url_for('main.cierre_del_dia') }}"
+       class="{{ 'activo' if fecha == hoy }}" id="ver-hoy">Hoy ({{ hoy }})</a>
+    <a href="{{ url_for('main.cierre_del_dia', dia='ayer') }}"
+       class="{{ 'activo' if fecha == ayer }}" id="ver-ayer">Ayer ({{ ayer }})</a>
+  </nav>
+
+  {% if mensaje %}<p class="aviso ok">{{ mensaje }}</p>{% endif %}
+  {% if error %}<p class="aviso error">{{ error }}</p>{% endif %}
+
+  {% if cierre %}
+    <p class="estado-cierre cerrado">
+      <strong>DÍA CERRADO</strong> — cierre <strong id="close-number">{{ cierre["close_number"] }}</strong>,
+      realizado el <span id="closed-at">{{ cierre["closed_at"] }}</span>.
+      Ya no se pueden registrar ni anular ventas de esta fecha.
+    </p>
+    <p class="acciones-cierre">
+      <a class="boton-pdf" id="abrir-pdf" target="_blank"
+         href="{{ url_for('main.pdf_del_cierre', dia='ayer' if fecha == ayer else None) }}">ABRIR PDF</a>
+      <span class="nota">Genera (o regenera) el PDF A4 a partir del cierre guardado.</span>
+    </p>
+    <form method="post" action="{{ url_for('main.crear_backup') }}" class="acciones-cierre">
+      <button type="submit" class="boton-pdf" id="repetir-backup">CREAR BACKUP AHORA</button>
+      <span class="nota">Copia validada de la base en la carpeta de backup. No sustituye
+        a las anteriores.</span>
+    </form>
+  {% else %}
+    <p class="estado-cierre abierto">
+      <strong>PREVISUALIZACIÓN</strong> — el día sigue abierto. Estas son las cifras que
+      quedarían guardadas si lo cierras ahora.
+    </p>
+  {% endif %}
+
+  <table class="tabla-historial tabla-cierre">
+    <tbody>
+      <tr><th>Fecha</th><td id="business-date">{{ c["business_date"] }}</td></tr>
+      <tr><th>Primera venta</th><td id="first-sale">{{ c["first_sale_number"] or "—" }}</td></tr>
+      <tr><th>Última venta</th><td id="last-sale">{{ c["last_sale_number"] or "—" }}</td></tr>
+      <tr><th>Ventas válidas</th><td class="importe" id="valid-count">{{ c["valid_sales_count"] }}</td></tr>
+      <tr><th>Anulaciones</th><td class="importe" id="void-count">{{ c["void_sales_count"] }}</td></tr>
+      <tr><th>Bruto</th><td class="importe" id="gross">{{ c["gross_cents"] | euros }}</td></tr>
+      <tr><th>Anulado</th><td class="importe" id="void">{{ c["void_cents"] | euros }}</td></tr>
+      <tr class="total-cierre"><th>Efectivo válido</th><td class="importe" id="valid-cash">{{ c["valid_cash_cents"] | euros }}</td></tr>
+    </tbody>
+  </table>
+
+  <section class="bloque">
+    <h2>{{ "Datos del establecimiento congelados en el cierre" if cierre
+           else "Datos del establecimiento que quedarán congelados en el cierre" }}</h2>
+    {% if establecimiento_completo %}
+      <table class="tabla-historial tabla-cierre" id="datos-establecimiento">
+        <tbody>
+          <tr><th>Nombre comercial</th><td>{{ c["trade_name_snapshot"] }}</td></tr>
+          <tr><th>Titular</th><td>{{ c["holder_name_snapshot"] }}</td></tr>
+          <tr><th>NIF</th><td>{{ c["tax_id_snapshot"] }}</td></tr>
+          <tr><th>Dirección</th><td>{{ c["address_snapshot"] }}</td></tr>
+        </tbody>
+      </table>
+    {% elif cierre %}
+      <p class="aviso error">Este cierre no tiene congelados los datos del
+        establecimiento: no se puede generar su PDF.</p>
+    {% else %}
+      <p class="aviso error" id="faltan-datos-establecimiento">Faltan datos del
+        establecimiento: no se puede cerrar el día hasta completarlos en
+        <a href="{{ url_for('main.datos_establecimiento') }}">Datos del establecimiento</a>.</p>
+    {% endif %}
+  </section>
+
+  <section class="bloque">
+    <h2>Unidades vendidas por producto</h2>
+    {% if c["items"] %}
+      <table class="tabla-historial tabla-unidades">
+        <thead><tr><th>Producto</th><th class="importe">Unidades</th></tr></thead>
+        <tbody>
+          {% for i in c["items"] %}
+            <tr>
+              <td class="producto">{{ i["product_name_snapshot"] }}</td>
+              <td class="importe unidades">{{ i["units"] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="vacio">Sin unidades vendidas en ventas válidas.</p>
+    {% endif %}
+  </section>
+
+  {% if not cierre and establecimiento_completo %}
+    <form method="post" action="{{ url_for('main.cerrar_dia') }}" class="form-cierre"
+          onsubmit="return confirm('¿Cerrar el día {{ c['business_date'] }}?\n\nEfectivo válido: {{ c['valid_cash_cents'] | euros }}\n\nEl día queda cerrado y ya no se podrán registrar ni anular ventas de esa fecha. No se puede deshacer.');">
+      <input type="hidden" name="fecha" value="{{ c['business_date'] }}">
+      <button type="submit" class="boton-cerrar-dia">CERRAR DÍA</button>
+    </form>
+    <p class="nota">
+      Después de pulsar <strong>CERRAR DÍA</strong>, el día queda cerrado y ya no se
+      podrán registrar ni anular ventas de esa fecha. No existe reapertura.
+    </p>
+  {% endif %}
+
+  <p class="nota">
+    Bruto = efectivo válido + anulado. Las ventas pertenecen al día en que se
+    confirmaron. Al cerrar el día se crea automáticamente un backup; si falla, el
+    cierre queda hecho igualmente y se puede repetir el backup.
+  </p>
+{% endblock %}

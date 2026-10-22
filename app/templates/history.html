@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Historial — Cafetería Cash{% endblock %}
+
+{% block content %}
+  <header class="cabecera">
+    <h1>Historial de ventas</h1>
+    <a class="enlace" href="{{ url_for('main.index') }}">← Pantalla de venta</a>
+  </header>
+
+  {% if mensaje %}<p class="aviso ok">{{ mensaje }}</p>{% endif %}
+  {% if error %}<p class="aviso error">{{ error }}</p>{% endif %}
+
+  {% if not ventas %}
+    <p class="vacio">Todavía no hay ventas confirmadas.</p>
+  {% else %}
+    <div class="tabla-historial-contenedor">
+      <table class="tabla-historial">
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Nº venta</th>
+            <th class="importe">Importe</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in ventas %}
+            <tr class="{{ 'anulada' if v['status'] == 'VOID' }}">
+              <td>{{ v["created_at"] }}</td>
+              <td class="numero">{{ v["sale_number"] }}</td>
+              <td class="importe">{{ v["total_cents"] | euros }}</td>
+              <td>
+                {% if v["status"] == "VALID" %}
+                  <span class="estado valida">VÁLIDA</span>
+                {% else %}
+                  <span class="estado anulada">ANULADA</span>
+                  <span class="anulada-en">el {{ v["voided_at"] }}</span>
+                {% endif %}
+              </td>
+              <td class="accion">
+                {% if v["status"] == "VALID" and v["dia_cerrado"] %}
+                  <span class="dia-cerrado">Día cerrado</span>
+                {% elif v["status"] == "VALID" %}
+                  <form method="post"
+                        action="{{ url_for('main.anular_venta', venta_id=v['id']) }}"
+                        onsubmit="return confirm('¿Anular la venta {{ v['sale_number'] }} de {{ v['total_cents'] | euros }}?\n\nSeguirá en el historial marcada como ANULADA. Esta acción no se puede deshacer.');">
+                    <button type="submit" class="boton-anular">ANULAR</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="nota">
+      Las ventas no se borran nunca. Una venta anulada conserva su número, su
+      importe y sus líneas originales; solo cambia su estado. Una anulación no
+      se puede deshacer.
+    </p>
+  {% endif %}
+{% endblock %}

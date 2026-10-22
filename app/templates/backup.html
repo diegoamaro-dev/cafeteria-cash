@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Copia de seguridad — Cafetería Cash{% endblock %}
+
+{% block content %}
+  <header class="cabecera">
+    <h1>Copia de seguridad</h1>
+    <a class="enlace" href="{{ url_for('main.index') }}">← Pantalla de venta</a>
+  </header>
+
+  {% if mensaje %}<p class="aviso ok">{{ mensaje }}</p>{% endif %}
+  {% if error %}<p class="aviso error">{{ error }}</p>{% endif %}
+
+  {% if carpeta %}
+    <p>Carpeta de backup: <strong id="carpeta-backup">{{ carpeta }}</strong></p>
+  {% else %}
+    <p class="aviso error" id="sin-carpeta">No hay carpeta de backup configurada. Define la
+      variable de entorno <code>{{ variable }}</code> con la ruta de la carpeta externa y
+      reinicia la aplicación.</p>
+  {% endif %}
+
+  <form method="post" action="{{ url_for('main.crear_backup') }}" class="form-cierre">
+    <button type="submit" class="boton-cerrar-dia" id="crear-backup">CREAR BACKUP AHORA</button>
+  </form>
+
+  <p class="nota">
+    Crea una copia de la base de datos con la fecha y la hora en el nombre
+    (<code>cafeteria_AAAA-MM-DD_HHMMSS.sqlite</code>), comprueba que es válida y no
+    sustituye ni borra las anteriores. Al cerrar el día se hace automáticamente.
+    Si la carpeta está sincronizada con una nube, la subida la hace ese programa.
+  </p>
+{% endblock %}

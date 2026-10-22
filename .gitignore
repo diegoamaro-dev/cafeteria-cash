@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------
+# Cafetería Cash — .gitignore
+# Regla: en GitHub SOLO código, documentación y scripts.
+# NUNCA datos reales, bases SQLite reales, backups ni secretos.
+# ---------------------------------------------------------------
+
+# Entornos virtuales
+.venv/
+venv/
+
+# Bytecode Python
+__pycache__/
+*.pyc
+
+# Secretos y configuración local
+.env
+
+# Bases de datos reales (datos de negocio)
+*.sqlite
+*.sqlite3
+*.db
+
+# Copias de seguridad y exportaciones (nunca a GitHub)
+/backups/
+/exports/
+
+# Directorio de datos locales: aqui vive la base SQLite real
+/data/
+
+# Ruido del sistema y editores
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

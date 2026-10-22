@@ -1,0 +1,471 @@
+/* Estilos minimos. Prioridad: botones grandes y legibles de un vistazo. */
+
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background: #f5f5f5;
+  color: #1a1a1a;
+}
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+h1 { margin-top: 0; font-size: 1.9rem; letter-spacing: -0.01em; }
+h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+.cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.enlace { color: #0b5cab; }
+
+.nota { color: #555; font-size: 0.9rem; }
+.vacio { color: #555; }
+
+/* Recordatorio del flujo, en la pantalla principal. */
+.ayuda {
+  margin: 1.25rem 0 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* Sin esto, moverse con el teclado no se ve. */
+:focus-visible {
+  outline: 3px solid #3d5ea8;
+  outline-offset: 2px;
+}
+
+/* --- Botones grandes de producto (pantalla principal) --- */
+
+.rejilla-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.boton-producto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 8.5rem;
+  padding: 1.25rem;
+  font-family: inherit;
+  background: #fff;
+  border: 2px solid #1a1a1a;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.boton-producto:hover { background: #f0f0f0; }
+
+/* Respuesta al pulsar: en una pantalla tactil no hay puntero que lo indique. */
+.boton-producto:active { transform: translateY(1px); }
+
+.boton-producto .nombre {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.boton-producto .precio { font-size: 1.25rem; }
+
+/* --- Gestion de productos --- */
+
+.bloque { margin-top: 2rem; }
+
+.fila-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.fila-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+input[type="text"] {
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #999;
+  border-radius: 4px;
+  min-width: 10rem;
+}
+
+input.corto { min-width: 5rem; width: 6rem; }
+
+.boton {
+  font: inherit;
+  padding: 0.45rem 0.9rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton.secundario { background: #fff; color: #1a1a1a; }
+.boton:hover { opacity: 0.85; }
+
+.lista-productos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.producto {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.producto .id { color: #777; padding-bottom: 0.5rem; }
+.producto .estado { padding-bottom: 0.5rem; font-size: 0.9rem; }
+.producto.inactivo { background: #fafafa; color: #777; }
+
+.aviso {
+  padding: 0.6rem 0.8rem;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.aviso.ok { background: #eef7ee; border-color: #3a7d3a; color: #1f5c1f; }
+.aviso.error { background: #fdeeee; border-color: #a33; color: #8a1f1f; }
+
+/* --- FASE 2: pantalla de venta --- */
+
+main { max-width: 68rem; }
+
+.tpv {
+  display: grid;
+  grid-template-columns: 1fr minmax(20rem, 24rem);
+  gap: 2rem;
+  align-items: start;
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 60rem) {
+  .tpv { grid-template-columns: 1fr; }
+}
+
+.botonera .rejilla-productos { margin: 0; }
+.rejilla-productos form { display: contents; }
+.boton-producto { width: 100%; }
+
+.venta {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  background: #fbfbfb;
+}
+
+.venta h2 { margin-top: 0; }
+
+.lineas {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.linea {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  grid-template-areas:
+    "nombre   menos cantidad mas eliminar"
+    "unitario menos cantidad mas subtotal";
+  align-items: center;
+  gap: 0.15rem 0.4rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.l-nombre   { grid-area: nombre; font-weight: 600; }
+.l-unitario { grid-area: unitario; font-size: 0.8rem; color: #666; }
+.l-cantidad { grid-area: cantidad; min-width: 2rem; text-align: center; font-size: 1.15rem; }
+.l-subtotal { grid-area: subtotal; text-align: right; font-variant-numeric: tabular-nums; }
+
+.linea .control { display: contents; }
+.linea .control:nth-of-type(1) .boton-cantidad { grid-area: menos; }
+.linea .control:nth-of-type(2) .boton-cantidad { grid-area: mas; }
+
+.boton-cantidad {
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #fff;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton-eliminar {
+  grid-area: eliminar;
+  font: inherit;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+  color: #8a1f1f;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton-eliminar:hover { border-color: #8a1f1f; }
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 1rem 0;
+  padding-top: 0.75rem;
+  border-top: 2px solid #1a1a1a;
+  font-size: 1.1rem;
+}
+
+.total strong { font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+
+.boton[disabled] { opacity: 0.4; cursor: default; }
+
+/* --- FASE 3: boton de cobro --- */
+
+.boton-cobrar {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.6rem;
+  padding: 1.1rem 1rem;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: #1f6b2a;
+  border: 2px solid #1f6b2a;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.boton-cobrar:hover:not([disabled]) { background: #195722; }
+
+.boton-cobrar[disabled] {
+  background: #d8d8d8;
+  border-color: #cfcfcf;
+  color: #7a7a7a;
+  cursor: default;
+}
+
+/* --- FASE 4: historial --- */
+
+.enlaces { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+
+.tabla-historial-contenedor { overflow-x: auto; margin-top: 1.5rem; }
+
+.tabla-historial {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-historial th,
+.tabla-historial td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #e3e3e3;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.tabla-historial th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #555;
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.tabla-historial .importe {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla-historial .numero { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tabla-historial .accion { text-align: right; width: 1%; white-space: nowrap; }
+
+.estado {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.estado.valida  { background: #eef7ee; color: #1f5c1f; border: 1px solid #3a7d3a; }
+.estado.anulada { background: #fdeeee; color: #8a1f1f; border: 1px solid #a33; }
+
+.anulada-en { display: block; margin-top: 0.2rem; font-size: 0.8rem; color: #8a1f1f; }
+
+/* La fila anulada sigue siendo legible: es historico, no se oculta. */
+tr.anulada td { color: #777; }
+
+.boton-anular {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  color: #8a1f1f;
+  background: #fff;
+  border: 1px solid #a33;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton-anular:hover { background: #fdeeee; }
+
+/* --- FASE 5: resumen del dia --- */
+
+.fecha-resumen { margin: 1rem 0 0; color: #555; }
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fbfbfb;
+}
+
+.cifra .etiqueta {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #555;
+}
+
+.cifra .valor {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.cifra .detalle { font-size: 0.9rem; color: #555; }
+
+.cifra.principal { border-color: #1f6b2a; background: #f3faf4; }
+.cifra.principal .valor { color: #1f5c1f; }
+
+.tabla-unidades { max-width: 28rem; }
+
+/* --- FASE 6: cierre diario --- */
+
+.estado-cierre {
+  margin-top: 1rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid;
+}
+
+.estado-cierre.abierto { background: #fff8e6; border-color: #c9962b; color: #6b4d0e; }
+.estado-cierre.cerrado { background: #eef2fb; border-color: #3d5ea8; color: #1f3566; }
+
+.tabla-cierre { max-width: 28rem; margin-top: 1rem; }
+.tabla-cierre th { text-transform: none; font-size: 0.95rem; color: #333; border-bottom: 1px solid #e3e3e3; }
+.tabla-cierre tr.total-cierre th,
+.tabla-cierre tr.total-cierre td { font-weight: 700; font-size: 1.1rem; border-top: 2px solid #1a1a1a; }
+
+.form-cierre { margin-top: 1.5rem; }
+
+.boton-cerrar-dia {
+  padding: 1rem 2rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: #3d5ea8;
+  border: 2px solid #3d5ea8;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.boton-cerrar-dia:hover { background: #324d8c; }
+
+.dia-cerrado { font-size: 0.8rem; color: #555; white-space: nowrap; }
+
+/* --- FASE 6: hoy / ayer en el cierre --- */
+
+.selector-dia { display: flex; gap: 0.5rem; margin-top: 1rem; }
+
+.selector-dia a {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #3d5ea8;
+  border-radius: 6px;
+  color: #3d5ea8;
+  text-decoration: none;
+}
+
+.selector-dia a.activo { background: #3d5ea8; color: #fff; font-weight: 700; }
+
+/* --- FASE 7: PDF y datos del establecimiento --- */
+
+.acciones-cierre { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+
+.boton-pdf {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: #1a1a1a;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.boton-pdf:hover { background: #333; }
+
+.form-establecimiento {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 34rem;
+  margin-top: 1rem;
+}
+
+.form-establecimiento label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.form-establecimiento input { width: 100%; box-sizing: border-box; }
+.form-establecimiento .boton { align-self: flex-start; }

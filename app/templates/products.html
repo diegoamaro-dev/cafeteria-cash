@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Productos — Cafetería Cash{% endblock %}
+
+{% block content %}
+  <header class="cabecera">
+    <h1>Productos</h1>
+    <nav class="enlaces">
+      <a class="enlace" href="{{ url_for('main.datos_establecimiento') }}">Datos del establecimiento</a>
+      <a class="enlace" href="{{ url_for('main.index') }}">← Pantalla principal</a>
+    </nav>
+  </header>
+
+  {% if mensaje %}<p class="aviso ok">{{ mensaje }}</p>{% endif %}
+  {% if error %}<p class="aviso error">{{ error }}</p>{% endif %}
+
+  <section class="bloque">
+    <h2>Nuevo producto</h2>
+    <form method="post" action="{{ url_for('main.crear_producto') }}" class="fila-form">
+      <label>Nombre
+        <input type="text" name="nombre" maxlength="60" required
+               value="{{ formulario.get('nombre', '') }}">
+      </label>
+      <label>Precio (€)
+        <input type="text" name="precio" class="corto" placeholder="1,40" required
+               value="{{ formulario.get('precio', '') }}">
+      </label>
+      <label>Orden
+        <input type="text" name="orden" class="corto" inputmode="numeric" placeholder="auto"
+               value="{{ formulario.get('orden', '') }}">
+      </label>
+      <button type="submit" class="boton">Crear</button>
+    </form>
+  </section>
+
+  <section class="bloque">
+    <h2>Catálogo ({{ productos | length }})</h2>
+
+    {% if not productos %}
+      <p class="vacio">Todavía no hay productos.</p>
+    {% else %}
+      <ul class="lista-productos">
+        {% for p in productos %}
+          <li class="producto {{ 'inactivo' if not p['active'] }}">
+            <span class="id">#{{ p["id"] }}</span>
+
+            <form method="post"
+                  action="{{ url_for('main.editar_producto', producto_id=p['id']) }}"
+                  class="fila-form">
+              <label>Nombre
+                <input type="text" name="nombre" maxlength="60" required
+                       value="{{ p['name'] }}">
+              </label>
+              <label>Precio (€)
+                <input type="text" name="precio" class="corto" required
+                       value="{{ '%d,%02d' % (p['price_cents'] // 100, p['price_cents'] % 100) }}">
+              </label>
+              <label>Orden
+                <input type="text" name="orden" class="corto"
+                       value="{{ p['display_order'] }}">
+              </label>
+              <button type="submit" class="boton">Guardar</button>
+            </form>
+
+            <span class="estado">{{ "Activo" if p["active"] else "Inactivo" }}</span>
+
+            <form method="post"
+                  action="{{ url_for('main.cambiar_estado', producto_id=p['id']) }}">
+              <input type="hidden" name="activar" value="{{ '0' if p['active'] else '1' }}">
+              <button type="submit" class="boton secundario">
+                {{ "Desactivar" if p["active"] else "Activar" }}
+              </button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <p class="nota">
+        Los productos no se borran nunca: se desactivan. Un producto inactivo
+        desaparece de la pantalla principal pero sigue en la base de datos.
+      </p>
+    {% endif %}
+  </section>
+{% endblock %}

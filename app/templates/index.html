@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="cabecera">
+    <h1>Cafetería Cash</h1>
+    <nav class="enlaces">
+      <a class="enlace" href="{{ url_for('main.resumen_del_dia') }}">Resumen del día</a>
+      <a class="enlace" href="{{ url_for('main.cierre_del_dia') }}">Cierre del día</a>
+      <a class="enlace" href="{{ url_for('main.historial') }}">Historial</a>
+      <a class="enlace" href="{{ url_for('main.productos') }}">Gestionar productos</a>
+      <a class="enlace" href="{{ url_for('main.pantalla_backup') }}">Copia de seguridad</a>
+    </nav>
+  </header>
+
+  <p class="ayuda">Selecciona productos → cobra en efectivo → siguiente cliente</p>
+
+  {% if hoy_cerrado %}
+    <p class="aviso error" id="aviso-dia-cerrado">
+      El día de hoy ya está cerrado: no se pueden registrar más ventas de esta fecha.
+    </p>
+  {% endif %}
+  {% if mensaje %}<p class="aviso ok">{{ mensaje }}</p>{% endif %}
+  {% if error %}<p class="aviso error">{{ error }}</p>{% endif %}
+
+  <div class="tpv">
+
+    <section class="botonera">
+      {% if productos %}
+        <div class="rejilla-productos">
+          {% for p in productos %}
+            <form method="post"
+                  action="{{ url_for('main.anadir_a_venta', producto_id=p['id']) }}">
+              <button type="submit" class="boton-producto">
+                <span class="nombre">{{ p["name"] }}</span>
+                <span class="precio">{{ p["price_cents"] | euros }}</span>
+              </button>
+            </form>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="vacio">
+          No hay productos activos.
+          <a href="{{ url_for('main.productos') }}">Crea el primero</a>.
+        </p>
+      {% endif %}
+    </section>
+
+    <section class="venta">
+      <h2>Venta actual</h2>
+
+      {% if not lineas %}
+        <p class="vacio">Sin líneas. Pulsa un producto para empezar.</p>
+      {% else %}
+        <ul class="lineas">
+          {% for l in lineas %}
+            <li class="linea">
+              <span class="l-nombre">{{ l["nombre"] }}</span>
+              <span class="l-unitario">{{ l["precio_centimos"] | euros }}/ud</span>
+
+              <form method="post"
+                    action="{{ url_for('main.cambiar_cantidad', producto_id=l['producto_id']) }}"
+                    class="control">
+                <input type="hidden" name="delta" value="-1">
+                <button type="submit" class="boton-cantidad" title="Quitar una unidad">−</button>
+              </form>
+
+              <span class="l-cantidad">{{ l["cantidad"] }}</span>
+
+              <form method="post"
+                    action="{{ url_for('main.cambiar_cantidad', producto_id=l['producto_id']) }}"
+                    class="control">
+                <input type="hidden" name="delta" value="1">
+                <button type="submit" class="boton-cantidad" title="Añadir una unidad">+</button>
+              </form>
+
+              <span class="l-subtotal">{{ l["subtotal_centimos"] | euros }}</span>
+
+              <form method="post"
+                    action="{{ url_for('main.eliminar_linea', producto_id=l['producto_id']) }}"
+                    class="control">
+                <button type="submit" class="boton-eliminar" title="Eliminar la línea">✕</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <p class="total">
+        <span>TOTAL</span>
+        <strong>{{ total_centimos | euros }}</strong>
+      </p>
+
+      <form method="post" action="{{ url_for('main.cobrar_en_efectivo') }}">
+        <button type="submit" class="boton-cobrar"
+                {{ 'disabled' if not lineas or hoy_cerrado }}>COBRAR EN EFECTIVO</button>
+      </form>
+
+      <form method="post" action="{{ url_for('main.cancelar_venta') }}">
+        <button type="submit" class="boton secundario"
+                {{ 'disabled' if not lineas }}>Cancelar venta</button>
+      </form>
+
+      <p class="nota">
+        Solo efectivo. La venta se guarda con número correlativo y no se puede
+        borrar; si es incorrecta, se anula desde el historial.
+      </p>
+    </section>
+
+  </div>
+{% endblock %}

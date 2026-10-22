@@ -1,0 +1,19 @@
+# Cafetería Cash — dependencias (FASE 0)
+#
+# Solo lo necesario para arrancar Flask.
+# Todas las versiones estan fijadas (incluidas las transitivas) para que la
+# instalacion sea reproducible en cualquier equipo y en el futuro, que es lo
+# que exige DISASTER_RECOVERY.md.
+#
+# Generado con: .venv\Scripts\python.exe -m pip freeze
+# Python de referencia: 3.12.10 (Windows)
+
+Flask==3.1.2
+
+# Dependencias de Flask
+blinker==1.9.0
+click==8.5.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+Werkzeug==3.1.8

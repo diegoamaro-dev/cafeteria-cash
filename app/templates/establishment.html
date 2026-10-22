@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Datos del establecimiento — Cafetería Cash{% endblock %}
+
+{% block content %}
+  <header class="cabecera">
+    <h1>Datos del establecimiento</h1>
+    <a class="enlace" href="{{ url_for('main.productos') }}">← Productos</a>
+  </header>
+
+  {% if mensaje %}<p class="aviso ok">{{ mensaje }}</p>{% endif %}
+  {% if error %}<p class="aviso error">{{ error }}</p>{% endif %}
+
+  <p class="nota">
+    Aparecen en la cabecera del PDF de cierre. Se guardan solo en la base de
+    datos local (y en sus copias de seguridad), nunca en el código ni en GitHub.
+  </p>
+
+  <form method="post" action="{{ url_for('main.guardar_establecimiento') }}" class="form-establecimiento">
+    <label>Titular (nombre o razón social)
+      <input type="text" name="titular" maxlength="100" required value="{{ datos.get('name') or '' }}">
+    </label>
+    <label>NIF
+      <input type="text" name="nif" maxlength="20" required value="{{ datos.get('tax_id') or '' }}">
+    </label>
+    <label>Nombre comercial
+      <input type="text" name="nombre_comercial" maxlength="100" required value="{{ datos.get('trade_name') or '' }}">
+    </label>
+    <label>Dirección
+      <input type="text" name="direccion" maxlength="200" required value="{{ datos.get('address') or '' }}">
+    </label>
+    <button type="submit" class="boton">Guardar</button>
+  </form>
+
+  {% if datos.get('updated_at') %}
+    <p class="nota">Última modificación: {{ datos["updated_at"] }}.</p>
+  {% endif %}
+{% endblock %}

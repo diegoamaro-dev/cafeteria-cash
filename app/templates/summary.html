@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Resumen del día — Cafetería Cash{% endblock %}
+
+{% block content %}
+  <header class="cabecera">
+    <h1>Resumen del día</h1>
+    <a class="enlace" href="{{ url_for('main.index') }}">← Pantalla de venta</a>
+  </header>
+
+  <p class="fecha-resumen">Fecha: <strong>{{ r["fecha"] }}</strong></p>
+
+  <div class="cifras">
+    <div class="cifra principal">
+      <span class="etiqueta">Efectivo válido</span>
+      <span class="valor" id="efectivo-valido">{{ r["efectivo_valido_centimos"] | euros }}</span>
+      <span class="detalle"><span id="ventas-validas">{{ r["ventas_validas"] }}</span> ventas válidas</span>
+    </div>
+    <div class="cifra">
+      <span class="etiqueta">Anulado</span>
+      <span class="valor" id="total-anulado">{{ r["total_anulado_centimos"] | euros }}</span>
+      <span class="detalle"><span id="ventas-anuladas">{{ r["ventas_anuladas"] }}</span> ventas anuladas</span>
+    </div>
+  </div>
+
+  <section class="bloque">
+    <h2>Unidades vendidas por producto</h2>
+    {% if r["unidades"] %}
+      <table class="tabla-historial tabla-unidades">
+        <thead>
+          <tr><th>Producto</th><th class="importe">Unidades</th></tr>
+        </thead>
+        <tbody>
+          {% for u in r["unidades"] %}
+            <tr>
+              <td class="producto">{{ u["nombre"] }}</td>
+              <td class="importe unidades">{{ u["unidades"] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="vacio">No hay unidades vendidas en ventas válidas este día.</p>
+    {% endif %}
+  </section>
+
+  <p class="nota">
+    Una venta cuenta en el día en que se confirmó, aunque se anule después.
+    Las unidades solo incluyen ventas válidas; las anuladas suman únicamente en
+    «Anulado». Esto es una consulta: no cierra el día.
+  </p>
+{% endblock %}
