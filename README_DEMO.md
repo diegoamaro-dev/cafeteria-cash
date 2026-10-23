@@ -31,6 +31,17 @@ INSTALAR_DEMO.bat
 Comprueba que tienes Python, prepara el entorno, instala las dependencias y
 crea la base de datos de demostración. Tarda un minuto.
 
+### Aviso de seguridad de Windows
+
+Al descargar el paquete desde internet, Windows puede mostrar un aviso de
+seguridad (SmartScreen) al ejecutar los archivos `.bat`.
+
+Ese aviso se debe **a la procedencia del archivo descargado**, no a que la
+aplicación instale software adicional ni haga nada fuera de esta carpeta.
+
+Si aparece, comprueba que el paquete procede de la *release* oficial de este
+repositorio antes de continuar.
+
 ---
 
 ## 2. Iniciar
