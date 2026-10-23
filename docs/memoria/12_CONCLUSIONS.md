@@ -62,6 +62,11 @@ sen enterarme.
 Engadiría unha cuarta, menos evidente: **non deixar medrar o alcance**. É o
 que me deu tempo a probar ben o pouco que hai.
 
+E ten un efecto que non buscaba ao principio: que a aplicación funcione no
+propio equipo e faga poucas cousas mantén os **custos recorrentes de
+infraestrutura practicamente a cero**. Non hai servidor que pagar nin servizo
+do que depender.
+
 ---
 
 ## 12.3. O que faría distinto

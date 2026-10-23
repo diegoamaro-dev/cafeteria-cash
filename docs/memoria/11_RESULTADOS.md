@@ -106,7 +106,120 @@ ruta persoal nin arquivo que non debese estar.
 
 ---
 
-## 11.6. O que non se conseguiu
+## 11.6. Estimación temporal e económica
+
+Todo o que segue son **estimacións**, non medicións. O tempo non se cronometrou
+e os importes non corresponden a ningunha factura: calcúlanse para poder
+valorar economicamente o traballo, que é o que pide o contexto académico.
+
+### O tempo
+
+O desenvolvemento, as probas e a documentación estímanse en **90 horas**.
+
+É unha estimación global do conxunto do traballo, feita a partir das fases do
+proxecto. Non sae de ningunha ferramenta de medición.
+
+### O valor dese tempo
+
+Tomando como referencia unha tarifa profesional de **23 €/hora**:
+
+> 90 h × 23 €/h = **2.070 €**
+
+Esa tarifa é unha referencia para poder poñerlle un número ao tempo dedicado,
+non un prezo cobrado a ninguén.
+
+### O equipamento
+
+O portátil empregado vale uns **700 €**. Sería incorrecto imputarllos enteiros
+ao proxecto: o ordenador non se comprou para isto nin deixa de servir ao
+rematar. Só corresponde **a parte proporcional de desgaste**.
+
+Cunha amortización simple —vida útil de 4 anos e un uso profesional de
+referencia de 1.760 horas ao ano—:
+
+> 700 € ÷ (4 × 1.760 h) × 90 h ≈ **9 €**
+
+### O despregamento
+
+Poñer a aplicación a funcionar no establecemento estímase en **2 horas**,
+adicionais ás 90 anteriores. Inclúen preparar o equipo, instalar o contorno e
+as dependencias, configurar a base e as copias, comprobar o arranque e facer
+unha proba básica.
+
+> 2 h × 23 €/h = **46 €**
+
+### Software e infraestrutura
+
+| Concepto | Custo |
+|---|---|
+| Python | 0 € |
+| Flask | 0 € |
+| SQLite | 0 € |
+| Resto de ferramentas empregadas | 0 € — ningunha esixe licenza comercial |
+| Hospedaxe | 0 € — a aplicación funciona no propio equipo |
+| Servidor propio da aplicación | 0 € — non existe |
+
+Unha precisión importante: a carpeta de copias **pode** estar sincronizada cun
+servizo externo, pero ese servizo **non forma parte de Cafetería Cash**. O seu
+custo, se o ten, pertence a outro sistema e non se imputa aquí.
+
+### Custo inicial estimado
+
+| Concepto | Custo |
+|---|---:|
+| Desenvolvemento, probas e documentación | 2.070 € |
+| Uso proporcional do portátil | ≈ 9 € |
+| Despregamento inicial | 46 € |
+| Software e licenzas | 0 € |
+| Hospedaxe propia da aplicación | 0 € |
+| **Total inicial estimado** | **≈ 2.125 €** |
+
+### Mantemento
+
+Convén separar dúas cousas que adoitan mesturarse.
+
+**Infraestrutura:** o custo recorrente é **≈ 0 €**. Non hai servidor, nin
+hospedaxe, nin cotas. É consecuencia directa de que a aplicación funcione no
+propio equipo.
+
+**Traballo humano:** para poder estimalo, resérvase **1 hora ao mes** para
+revisións, pequenas correccións e soporte:
+
+> 1 h/mes × 23 €/h = 23 €/mes → **276 €/ano**
+
+É unha **reserva estimada**, non un gasto comprometido. Non significa que se
+vaia consumir unha hora todos os meses: haberá meses sen ningunha intervención.
+
+### Primeiro ano
+
+> 2.125 € + 276 € = **≈ 2.401 €**
+
+Entendido como **estimación económica do primeiro ano**, non como un
+desembolso real que alguén teña que pagar.
+
+### Valor comercial estimado
+
+Custo de produción e valor comercial **non son o mesmo**, e convén non
+confundilos. Que algo custe 2.125 € en producir non significa que valla iso no
+mercado: pode valer máis ou menos.
+
+Para estimar o valor comercial hai que mirar o que se entrega: unha aplicación
+**feita a medida** e **en uso real**, con documentación técnica, 263 probas
+automatizadas, peche diario, xeración de documentos PDF, copias de seguridade
+validadas e instalación local sen dependencia de servizos externos.
+
+Con eses elementos, establécese unha horquilla orientativa de **2.500 € a
+3.000 €**, tomando como referencia:
+
+> **2.750 €**
+
+**É unha estimación académica**, feita para poder razoar sobre o valor do
+traballo. **Non é o resultado dun estudo de mercado** nin unha oferta: non se
+consultaron prezos de produtos comparables nin se sondeou a ningún cliente.
+
+---
+
+## 11.7. O que non se conseguiu
 
 Dos doce obxectivos iniciais, dous quedaron sen cumprir: **restaurar unha
 copia de seguridade e comprobar os datos recuperados**.
