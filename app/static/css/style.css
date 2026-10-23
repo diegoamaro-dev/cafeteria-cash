@@ -469,3 +469,17 @@ tr.anulada td { color: #777; }
 
 .form-establecimiento input { width: 100%; box-sizing: border-box; }
 .form-establecimiento .boton { align-self: flex-start; }
+
+/* --- Aviso de modo demostracion (solo con data/demo.sqlite) --- */
+
+.aviso-demo {
+  margin: 0 0 1.25rem;
+  padding: 0.55rem 1rem;
+  background: #fff3cd;
+  border-bottom: 2px solid #c9962b;
+  color: #6b4d0e;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+}

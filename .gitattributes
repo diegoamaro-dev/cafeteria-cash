@@ -1,0 +1,5 @@
+# Los lanzadores de la demo son archivos .bat de Windows. cmd.exe puede fallar
+# al interpretar bloques if (...) si las lineas no terminan en CRLF, y git
+# guarda los blobs en LF. Esta regla garantiza que salgan con CRLF tanto al
+# clonar como en el ZIP que genera `git archive`.
+*.bat text eol=crlf

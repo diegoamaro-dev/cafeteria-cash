@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+  {% if modo_demo %}
+    <p class="aviso-demo">MODO DEMOSTRACIÓN — datos ficticios</p>
+  {% endif %}
   <main>
     {% block content %}{% endblock %}
   </main>
