@@ -27,6 +27,35 @@ seguridade validada fóra do equipo.
 
 ---
 
+## Probar Cafetería Cash
+
+Hai dúas formas, segundo o que queiras facer.
+
+### Probar a aplicación en Windows, sen instalar nada a man
+
+Descarga o paquete de demostración desde
+[Releases](https://github.com/diegoamaro-dev/cafeteria-cash/releases),
+descomprímeo e executa, por esta orde:
+
+| | |
+|---|---|
+| `INSTALAR_DEMO.bat` | Prepara o contorno e crea os datos de demostración |
+| `INICIAR_DEMO.bat` | Arranca a aplicación e abre o navegador |
+| `REINICIAR_DEMO.bat` | Devolve a demo ao seu estado inicial |
+
+Precisa **Python 3.12** instalado e no `PATH`. As instrucións completas e o
+que podes probar están en [README_DEMO.md](README_DEMO.md).
+
+> **Todos os datos da demostración son ficticios.** A aplicación escoita só en
+> `127.0.0.1`: non se publica na rede nin en internet.
+
+### Instalar desde o código
+
+Se prefires partir do repositorio, as instrucións están máis abaixo, na
+sección [Instalación](#instalación).
+
+---
+
 ## Contexto académico
 
 | | |
